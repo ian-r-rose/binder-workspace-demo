@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Get the right workspace ID
+sed -i -e "s|WORKSPACE_ID|/user/${JUPYTERHUB_USER}/lab|g" binder/jupyterlab-workspace.json
+
+# Import the workspace into JupyterLab
+jupyter lab workspaces import binder/jupyterlab-workspace.json \
+  --NotebookApp.base_url=user/${JUPYTERHUB_USER}
+
+exec "$@"

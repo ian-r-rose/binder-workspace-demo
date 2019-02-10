@@ -40,20 +40,17 @@ In our binder [`start`](binder/start) script, we enter the following:
 ```bash
 #!/bin/bash
 
-# Get the right workspace ID
-sed -i -e "s|/lab|/user/${JUPYTERHUB_USER}/lab|g" binder/workspace.json
-
 # Import the workspace into JupyterLab
 jupyter lab workspaces import binder/workspace.json \
-  --NotebookApp.base_url=user/${JUPYTERHUB_USER}
+  --NotebookApp.base_url=user/${JUPYTERHUB_USER} --name=""
 
 exec "$@"
 ```
 
 The first line specifies that we are using `bash` to execute the script.
-The second uses `sed` to patch in the correct workspace ID, including the user name.
-The third actually performs the import of the workspace file.
-The fourth line launches the notebook server.
+The performs the import of the workspace file, specifying an empty name,
+which puts it in the default `/lab` workspace.
+The third line launches the notebook server.
 
 ## Custom settings
 

@@ -48,7 +48,7 @@ exec "$@"
 ```
 
 The first line specifies that we are using `bash` to execute the script.
-The performs the import of the workspace file, specifying an empty name,
+The second performs the import of the workspace file, specifying an empty name,
 which puts it in the default `/lab` workspace.
 The third line launches the notebook server.
 

@@ -30,27 +30,22 @@ Just putting the workspace file in your repository is not enough.
 At binder launch time, you must import that workspace, and then load JupyterLab with it.
 
 There is a corresponding `import` command for exactly this use case.
-However, the workspace has a notion of a unique workspace ID,
-which is a combination of the server base URL and the workspace name.
-Since binder chooses a random name for the user upon launch,
-we have to do some extra work to get the right ID.
 
-In our binder [`start`](binder/start) script, we enter the following:
+In our binder [`postBuild`](binder/postBuild) script, we enter the following:
 
 ```bash
 #!/bin/bash
 
 # Import the workspace into JupyterLab
-jupyter lab workspaces import binder/workspace.json \
-  --NotebookApp.base_url=user/${JUPYTERHUB_USER} --name=""
-
-exec "$@"
+jupyter lab workspaces import binder/workspace.json
 ```
 
 The first line specifies that we are using `bash` to execute the script.
-The second performs the import of the workspace file, specifying an empty name,
-which puts it in the default `/lab` workspace.
-The third line launches the notebook server.
+The second performs the import of the workspace file.
+
+In some cases you may want to edit a workspace to insert values that are
+not available at the time of the image build.
+If that is the case, you can also perform the workspace import in a binder `start` script.
 
 ## Custom settings
 
@@ -73,5 +68,5 @@ At this point, you just need to push your repository to the remote,
 and open binder with a default URL pointing to JupyterLab.
 
 This demo used the default workspace (which is shown when you navigate to `/lab`),
-but it is also possible to export to named workspaces, which may be useful
+but it is also possible to import to named workspaces, which may be useful
 if your repository wants to use several different layouts.
